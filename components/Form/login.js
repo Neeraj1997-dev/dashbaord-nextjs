@@ -41,7 +41,6 @@ const LoginForm = () => {
   const staticLogin = async (data) => {
     setIsLoading(true);
     try {
-      // Simulate API login delay
       await new Promise((resolve) => setTimeout(resolve, 1000));
 
       const { email, password } = data;

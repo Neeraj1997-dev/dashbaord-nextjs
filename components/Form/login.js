@@ -62,91 +62,102 @@ const LoginForm = () => {
   };
 
   return (
-    <Card className="w-full max-w-md mx-auto">
-      <CardHeader>
-        <CardTitle className="text-2xl font-bold text-center">Sign In</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(staticLogin)} className="space-y-6">
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Email</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Enter your email" {...field} />
-                  </FormControl>
-                  <FormMessage>{form.formState.errors.email?.message}</FormMessage>
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="password"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Password</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="password"
-                      placeholder="Enter your password"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage>
-                    {form.formState.errors.password?.message}
-                  </FormMessage>
-                </FormItem>
-              )}
-            />
-            <Button className="w-full" variant="pinkBlue" type="submit" disabled={isLoading}>
-              {isLoading ? "Signing In..." : "Sign In"}
-            </Button>
-          </form>
-        </Form>
-        <div className="relative my-6">
-          <div className="absolute inset-0 flex items-center">
-            <span className="w-full border-t" />
+    <div className="flex items-center justify-center min-h-screen px-4 sm:px-6 lg:px-8 bg-gray-50">
+      <Card className="w-full max-w-md sm:max-w-lg mx-auto p-4 sm:p-6 lg:p-8">
+        <CardHeader>
+          <CardTitle className="text-xl sm:text-2xl font-bold text-center">
+            Sign In
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(staticLogin)} className="space-y-6">
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Email</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Enter your email" {...field} />
+                    </FormControl>
+                    <FormMessage>
+                      {form.formState.errors.email?.message}
+                    </FormMessage>
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="password"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Password</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="password"
+                        placeholder="Enter your password"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage>
+                      {form.formState.errors.password?.message}
+                    </FormMessage>
+                  </FormItem>
+                )}
+              />
+              <Button
+                className="w-full"
+                variant="pinkBlue"
+                type="submit"
+                disabled={isLoading}
+              >
+                {isLoading ? "Signing In..." : "Sign In"}
+              </Button>
+            </form>
+          </Form>
+          <div className="relative my-6">
+            <div className="absolute inset-0 flex items-center">
+              <span className="w-full border-t" />
+            </div>
+            <div className="relative flex justify-center text-xs uppercase">
+              <span className="bg-gray-50 px-2 text-gray-500">Or</span>
+            </div>
           </div>
-          <div className="relative flex justify-center text-xs uppercase">
-            <span className="bg-background px-2 text-muted-foreground">Or</span>
-          </div>
-        </div>
-        <Button
-          type="button"
-          variant="outline"
-          className="w-full"
-          onClick={() => alert("Google Sign-In is disabled in this demo.")}
-        >
-          <FcGoogle className="mr-2 h-4 w-4" />
-          Sign in with Google
-        </Button>
-      </CardContent>
-      <CardFooter className="flex flex-col items-center space-y-4">
-        <p className="text-sm text-muted-foreground">
-          Don&apos;t have an account?{" "}
-          <Link
-            href="/register"
-            className="font-medium text-primary underline underline-offset-4 hover:text-primary/80"
+          <Button
+            type="button"
+            variant="outline"
+            className="w-full"
+            onClick={() => alert("Google Sign-In is disabled in this demo.")}
           >
-            Register here
-          </Link>
-        </p>
-        <p className="text-sm text-muted-foreground">
-          Developed by{" "}
-          <a
-            href="https://www.neerajkumar.in/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="font-medium text-primary underline underline-offset-4 hover:text-primary/80"
-          >
-            Neeraj Kumar
-          </a>
-        </p>
-      </CardFooter>
-    </Card>
+            <FcGoogle className="mr-2 h-4 w-4" />
+            Sign in with Google
+          </Button>
+        </CardContent>
+        <CardFooter className="flex flex-col items-center space-y-4">
+          <p className="text-sm text-gray-500">
+            Don&apos;t have an account?{" "}
+            <Link
+              href="/register"
+              className="font-medium text-blue-600 underline underline-offset-4 hover:text-blue-500"
+            >
+              Register here
+            </Link>
+          </p>
+          <p className="text-sm text-gray-500">
+            Developed by{" "}
+            <a
+              href="https://www.neerajkumar.in/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-medium text-blue-600 underline underline-offset-4 hover:text-blue-500"
+            >
+              Neeraj Kumar
+            </a>
+          </p>
+        </CardFooter>
+      </Card>
+    </div>
   );
 };
 

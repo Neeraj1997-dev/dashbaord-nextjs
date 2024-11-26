@@ -41,12 +41,12 @@ const Dashboard = () => {
       <div className="flex-1 flex flex-col px-4 sm:px-6 lg:px-8">
         <Card className="flex-1 w-full mt-8 p-6 bg-white shadow-lg rounded-lg">
           <CardHeader>
-            <CardTitle className="text-2xl sm:text-3xl font-bold text-center">Dashboard</CardTitle>
+            <CardTitle className="text-2xl sm:text-3xl font-bold text-center">YouData.AI</CardTitle>
           </CardHeader>
 
           <CardContent>
             <div className="text-center mb-6">
-              <p className="text-lg sm:text-xl font-medium">Welcome to your dashboard!</p>
+              <p className="text-lg sm:text-xl font-medium">Welcome to your YouData.AI!</p>
             </div>
 
             <div className="mb-4 flex justify-center">

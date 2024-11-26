@@ -24,7 +24,7 @@ const Sidebar = () => {
         } md:translate-x-0 md:w-64`}
       >
         <div className="p-4 font-bold text-center border-b border-gray-700">
-          Dashboard
+        YouData.AI
         </div>
         <ul className="mt-8 space-y-6">
           <li>

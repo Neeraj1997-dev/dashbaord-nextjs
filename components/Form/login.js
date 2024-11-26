@@ -10,7 +10,7 @@ import {
   FormLabel,
   FormMessage,
 } from "../FormUI/from";
-import * as z from "zod";
+import * as zod from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "../Input/input";
 import { Button } from "../Button/button";
@@ -23,12 +23,11 @@ import {
 } from "@/components/Card/card";
 
 import Cookies from "js-cookie";
-import { FcGoogle } from "react-icons/fc";
 import Link from "next/link";
 
-const FormSchema = z.object({
-  email: z.string().email("Invalid email address"),
-  password: z.string().min(6, "Password must be at least 6 characters"),
+const FormSchema = zod.object({
+  email: zod.string().email("Invalid email address"),
+  password: zod.string().min(6, "Password must be at least 6 characters"),
 });
 
 const LoginForm = () => {
@@ -38,23 +37,31 @@ const LoginForm = () => {
 
   const [isLoading, setIsLoading] = useState(false);
 
-  const staticLogin = async (data) => {
+  const onSubmit = async (data) => {
     setIsLoading(true);
     try {
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/users/login`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        }
+      );
 
-      const { email, password } = data;
-
-      if (email === "neeraj@aisv.in" && password === "neeraj@123") {
-        Cookies.set("token", "static-login-token", {
-          expires: 7,
-          secure: true,
-        });
-        alert("Login successful!");
+      if (response.ok) {
+        const result = await response.json();
+        Cookies.set("token", result.token, { expires: 2 });
         window.location.href = "/dashboard";
       } else {
-        alert("Invalid email or password. Please try again.");
+        const error = await response.json();
+        alert(error.message || "Login failed");
       }
+    } catch (error) {
+      console.error("Error:", error);
+      alert("An error occurred. Please try again.");
     } finally {
       setIsLoading(false);
     }
@@ -62,15 +69,18 @@ const LoginForm = () => {
 
   return (
     <div className="flex items-center justify-center min-h-screen px-4 sm:px-6 lg:px-8 bg-gray-50">
-      <Card className="w-full max-w-md sm:max-w-lg mx-auto p-4 sm:p-6 lg:p-8">
-        <CardHeader>
+      <Card className="w-full max-w-md sm:max-w-lg mx-auto p-4 sm:p-6 lg:p-8 shadow-lg">
+        <CardHeader className="text-center">
           <CardTitle className="text-xl sm:text-2xl font-bold text-center">
-            Sign In
+            Welcome to Tender.AI
           </CardTitle>
+          <p className="text-sm text-gray-500">
+            Your AI-powered tender assistant
+          </p>
         </CardHeader>
         <CardContent>
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(staticLogin)} className="space-y-6">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
               <FormField
                 control={form.control}
                 name="email"
@@ -106,8 +116,7 @@ const LoginForm = () => {
                 )}
               />
               <Button
-                className="w-full"
-                variant="pinkBlue"
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md transition duration-150 disabled:bg-gray-400"
                 type="submit"
                 disabled={isLoading}
               >
@@ -123,15 +132,6 @@ const LoginForm = () => {
               <span className="bg-gray-50 px-2 text-gray-500">Or</span>
             </div>
           </div>
-          <Button
-            type="button"
-            variant="outline"
-            className="w-full"
-            onClick={() => alert("Google Sign-In is disabled in this demo.")}
-          >
-            <FcGoogle className="mr-2 h-4 w-4" />
-            Sign in with Google
-          </Button>
         </CardContent>
         <CardFooter className="flex flex-col items-center space-y-4">
           <p className="text-sm text-gray-500">

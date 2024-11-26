@@ -10,7 +10,7 @@ import {
   FormLabel,
   FormMessage,
 } from "../FormUI/from";
-import * as z from "zod";
+import * as zod from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "../Input/input";
 import { Button } from "../Button/button";
@@ -19,10 +19,10 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/componen
 import Cookies from "js.cookie";
 import Link from "next/link";
 
-const FormSchema = z.object({
-  name: z.string().min(2, "Name must be at least 2 characters"),
-  email: z.string().email("Invalid email address"),
-  password: z.string().min(6, "Password must be at least 6 characters"),
+const FormSchema = zod.object({
+  name: zod.string().min(2, "Name must be at least 2 characters"),
+  email: zod.string().email("Invalid email address"),
+  password: zod.string().min(6, "Password must be at least 6 characters"),
 });
 
 const RegistrationForm = () => {

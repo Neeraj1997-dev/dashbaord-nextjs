@@ -13,11 +13,14 @@ const Dashboard = () => {
   // State for search input and table data
   const [searchQuery, setSearchQuery] = useState("");
   const [tableData, setTableData] = useState([
-    { id: 1, name: "John Doe", role: "Developer" },
-    { id: 2, name: "Jane Smith", role: "Designer" },
-    { id: 3, name: "Mike Johnson", role: "Manager" },
-  ]);
+    { id: 1, name: "Mayank Dubey", role: "CEO/CTO" },
+    { id: 2, name: "Navneet Singh", role: "Front End Developer" },
+    { id: 3, name: "Harshil Rami", role: "Senior Data Scientist" },
+    { id: 4, name: "Sandeep Raghuvanshi", role: "DevOps" },
+    { id: 5, name: "Saurav Yadav", role: "Data Team" },
 
+  ]);
+//Sandeep Raghuvanshi
   // Filtered data based on search query
   const filteredData = tableData.filter((row) =>
     row.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -36,12 +39,15 @@ const Dashboard = () => {
 
   return (
     <div className="flex flex-col lg:flex-row">
-      <Sidebar className="hidden lg:block" /> {/* Sidebar hidden on small screens */}
+      {/* Sidebar hidden on small screens and collapsible on large screens */}
+      <Sidebar className="lg:block hidden" />
+
       <div className="w-full lg:ml-64 px-4 sm:px-6 lg:px-8">
-        <Card className="w-full max-w-lg mx-auto mt-8">
+        <Card className="w-full max-w-lg mx-auto mt-8 p-4">
           <CardHeader>
             <CardTitle className="text-xl sm:text-2xl font-bold text-center">Dashboard</CardTitle>
           </CardHeader>
+
           <CardContent>
             <div className="text-center mb-6">
               <p className="text-base sm:text-lg font-medium">Welcome to your dashboard!</p>
@@ -51,7 +57,7 @@ const Dashboard = () => {
             <div className="mb-4">
               <input
                 type="text"
-                className="input input-bordered w-full"
+                className="input input-bordered w-full sm:w-80 mx-auto"
                 placeholder="Search by name or role..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
@@ -88,19 +94,6 @@ const Dashboard = () => {
               </table>
             </div>
           </CardContent>
-          <CardFooter className="text-center text-xs sm:text-sm text-muted-foreground">
-            <p>
-              Developed by{" "}
-              <a
-                href="https://www.neerajkumar.in"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="underline hover:text-primary"
-              >
-                Neeraj Kumar
-              </a>
-            </p>
-          </CardFooter>
         </Card>
       </div>
     </div>

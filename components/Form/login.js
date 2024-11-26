@@ -24,6 +24,7 @@ import {
 
 import Cookies from "js-cookie";
 import Link from "next/link";
+import { useRouter } from "next/navigation"; // Import the useRouter hook
 
 const FormSchema = zod.object({
   email: zod.string().email("Invalid email address"),
@@ -36,6 +37,7 @@ const LoginForm = () => {
   });
 
   const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter(); // Initialize the router
 
   const onSubmit = async (data) => {
     setIsLoading(true);
@@ -54,7 +56,7 @@ const LoginForm = () => {
       if (response.ok) {
         const result = await response.json();
         Cookies.set("token", result.token, { expires: 2 });
-        window.location.href = "/dashboard";
+        router.push("/dashboard"); // Use the router to navigate
       } else {
         const error = await response.json();
         alert(error.message || "Login failed");
@@ -86,7 +88,11 @@ const LoginForm = () => {
                   <FormItem>
                     <FormLabel>Email</FormLabel>
                     <FormControl>
-                      <Input placeholder="Enter your email" {...field} />
+                      <Input
+                        placeholder="Enter your email"
+                        {...field}
+                        value={field.value || ""} // Ensure it's always controlled
+                      />
                     </FormControl>
                     <FormMessage>
                       {form.formState.errors.email?.message}
@@ -105,6 +111,7 @@ const LoginForm = () => {
                         type="password"
                         placeholder="Enter your password"
                         {...field}
+                        value={field.value || ""} // Ensure it's always controlled
                       />
                     </FormControl>
                     <FormMessage>

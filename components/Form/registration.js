@@ -30,14 +30,31 @@ const RegistrationForm = () => {
     resolver: zodResolver(FormSchema),
   });
 
-  const registerUser = (data) => {
+  const registerUser = async (data) => {
     const { name, email, password } = data;
 
-    // You can replace this with an API call to register the user
-    alert(`Registration successful for ${name} with email ${email}`);
-    Cookies.set("token", "registration-demo-token", { expires: 7 });
-    // Redirect to dashboard or login
-    // window.location.href = "/dashboard";
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/users/signup`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ name, email, password }),
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        Cookies.set('token', result.token, { expires: 7 }); 
+       // alert(`Registration successful for ${name} with email ${email}`);
+        window.location.href = "/dashboard"; 
+      } else {
+        alert(`Registration failed: ${result.message || 'Something went wrong'}`);
+      }
+    } catch (error) {
+      console.error('Error during registration:', error);
+      alert('An error occurred while registering. Please try again.');
+    }
   };
 
   return (

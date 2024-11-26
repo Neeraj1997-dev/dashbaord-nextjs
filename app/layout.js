@@ -1,27 +1,38 @@
-"use client"; // Mark this file as a client component because we're using useRouter
+'use client'; 
 
-import { useRouter } from "next/navigation";
-import Sidebar from "@/components/Sidebar";
+import { usePathname } from 'next/navigation'; // To get current path
+import Sidebar from '../components/Sidebar';  // Import your Sidebar component
+import localFont from "next/font/local"; // Import metadata
 import "./globals.css";
 
+// Fonts
+const geistSans = localFont({
+  src: "./fonts/GeistVF.woff",
+  variable: "--font-geist-sans",
+  weight: "100 900",
+});
+const geistMono = localFont({
+  src: "./fonts/GeistMonoVF.woff",
+  variable: "--font-geist-mono",
+  weight: "100 900",
+});
+
 export default function RootLayout({ children }) {
-  const { pathname } = useRouter() || {};  // Safeguard: handle if pathname is undefined
+  const pathname = usePathname();  // Get the current route
+  console.log("Current Path:", pathname);  // Debugging the pathname
 
-  // Define routes where the sidebar should not appear
-  const noSidebarRoutes = ["/auth", "/register"];
-
-  // Check if pathname is available and ensure that it's not in noSidebarRoutes
-  const shouldShowSidebar = pathname && !noSidebarRoutes.some(route => pathname.startsWith(route));
+  // Exclude '/' (root), '/auth', and '/register' paths from showing the sidebar
+  const showSidebar = !(
+    pathname === "/" || pathname.startsWith("/auth") || pathname.startsWith("/register")
+  );
 
   return (
     <html lang="en">
-      <body className="antialiased bg-gray-100">
-        <div className="flex">
-          {shouldShowSidebar && <Sidebar />}  {/* Show sidebar based on route */}
-          <main className={`flex-grow p-6 ${shouldShowSidebar ? "ml-64" : ""}`}>
-            {children}
-          </main>
-        </div>
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        {showSidebar && <Sidebar />}
+        <main className={`${showSidebar ? 'ml-64' : ''} transition-all`}>
+          {children}
+        </main>
       </body>
     </html>
   );

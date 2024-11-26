@@ -43,15 +43,6 @@ const Sidebar = () => {
             </li>
             <li>
               <Link
-                href="/profile"
-                className="flex items-center space-x-3 p-4 hover:bg-gray-700 rounded-md transition"
-              >
-                <FaUser className="h-5 w-5" />
-                <span>Profile</span>
-              </Link>
-            </li>
-            <li>
-              <Link
                 href="/tasks"
                 className="flex items-center space-x-3 p-4 hover:bg-gray-700 rounded-md transition"
               >
@@ -61,7 +52,17 @@ const Sidebar = () => {
             </li>
             <li>
               <Link
-                href="/login"
+                href="/profile"
+                className="flex items-center space-x-3 p-4 hover:bg-gray-700 rounded-md transition"
+              >
+                <FaUser className="h-5 w-5" />
+                <span>Profile</span>
+              </Link>
+            </li>
+
+            <li>
+              <Link
+                href="/auth"
                 className="flex items-center space-x-3 p-4 hover:bg-gray-700 rounded-md transition"
               >
                 <FaSignOutAlt className="h-5 w-5" />

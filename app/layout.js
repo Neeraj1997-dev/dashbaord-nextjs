@@ -1,8 +1,8 @@
 'use client'; 
 
-import { usePathname } from 'next/navigation'; // To get current path
-import Sidebar from '../components/Sidebar';  // Import your Sidebar component
-import localFont from "next/font/local"; // Import metadata
+import { usePathname } from 'next/navigation'; 
+import Sidebar from '../components/Sidebar'; 
+import localFont from "next/font/local"; 
 import "./globals.css";
 
 // Fonts
@@ -18,10 +18,8 @@ const geistMono = localFont({
 });
 
 export default function RootLayout({ children }) {
-  const pathname = usePathname();  // Get the current route
-  console.log("Current Path:", pathname);  // Debugging the pathname
-
-  // Exclude '/' (root), '/auth', and '/register' paths from showing the sidebar
+  const pathname = usePathname(); 
+  console.log("Current Path:", pathname);  
   const showSidebar = !(
     pathname === "/" || pathname.startsWith("/auth") || pathname.startsWith("/register")
   );

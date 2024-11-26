@@ -10,7 +10,6 @@ const Dashboard = () => {
   const router = useRouter();
   const token = Cookies.get("token");
 
-  // State for search input and table data
   const [searchQuery, setSearchQuery] = useState("");
   const [tableData, setTableData] = useState([
     { id: 1, name: "Mayank Dubey", role: "CEO/CTO" },
@@ -20,8 +19,6 @@ const Dashboard = () => {
     { id: 5, name: "Saurav Yadav", role: "Data Team" },
 
   ]);
-//Sandeep Raghuvanshi
-  // Filtered data based on search query
   const filteredData = tableData.filter((row) =>
     row.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
     row.role.toLowerCase().includes(searchQuery.toLowerCase())
@@ -39,7 +36,6 @@ const Dashboard = () => {
 
   return (
     <div className="flex flex-col lg:flex-row">
-      {/* Sidebar hidden on small screens and collapsible on large screens */}
       <Sidebar className="lg:block hidden" />
 
       <div className="w-full lg:ml-64 px-4 sm:px-6 lg:px-8">
@@ -53,7 +49,6 @@ const Dashboard = () => {
               <p className="text-base sm:text-lg font-medium">Welcome to your dashboard!</p>
             </div>
 
-            {/* Search bar */}
             <div className="mb-4">
               <input
                 type="text"
@@ -63,8 +58,6 @@ const Dashboard = () => {
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
             </div>
-
-            {/* Table */}
             <div className="overflow-x-auto">
               <table className="table table-auto w-full">
                 <thead>

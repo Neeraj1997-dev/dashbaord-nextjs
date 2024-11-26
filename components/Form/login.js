@@ -72,11 +72,9 @@ const LoginForm = () => {
       <Card className="w-full max-w-md sm:max-w-lg mx-auto p-4 sm:p-6 lg:p-8 shadow-lg">
         <CardHeader className="text-center">
           <CardTitle className="text-xl sm:text-2xl font-bold text-center">
-            Welcome to Tender.AI
+            Welcome to YouData Team
           </CardTitle>
-          <p className="text-sm text-gray-500">
-            Your AI-powered tender assistant
-          </p>
+          <p className="text-sm text-gray-500">Daily Work Report</p>
         </CardHeader>
         <CardContent>
           <Form {...form}>

@@ -27,7 +27,7 @@ const Sidebar = () => {
         } md:translate-x-0 md:w-64`}
       >
         <div className="p-4 md:p-6 lg:p-8 text-xl md:text-2xl font-bold text-center border-b border-gray-700">
-          <span className="block md:inline">Tender.AI</span>
+          <span className="block md:inline">YouData Team</span>
         </div>
 
         <div className="mt-8">

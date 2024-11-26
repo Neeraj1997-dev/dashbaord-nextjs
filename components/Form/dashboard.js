@@ -17,8 +17,8 @@ const Dashboard = () => {
     { id: 3, name: "Harshil Rami", role: "Senior Data Scientist" },
     { id: 4, name: "Sandeep Raghuvanshi", role: "DevOps" },
     { id: 5, name: "Saurav Yadav", role: "Data Team" },
-
   ]);
+
   const filteredData = tableData.filter((row) =>
     row.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
     row.role.toLowerCase().includes(searchQuery.toLowerCase())
@@ -35,31 +35,32 @@ const Dashboard = () => {
   }
 
   return (
-    <div className="flex flex-col lg:flex-row">
+    <div className="flex flex-col lg:flex-row min-h-screen">
       <Sidebar className="lg:block hidden" />
 
-      <div className="w-full lg:ml-64 px-4 sm:px-6 lg:px-8">
-        <Card className="w-full max-w-lg mx-auto mt-8 p-4">
+      <div className="flex-1 flex flex-col px-4 sm:px-6 lg:px-8">
+        <Card className="flex-1 w-full mt-8 p-6 bg-white shadow-lg rounded-lg">
           <CardHeader>
-            <CardTitle className="text-xl sm:text-2xl font-bold text-center">Dashboard</CardTitle>
+            <CardTitle className="text-2xl sm:text-3xl font-bold text-center">Dashboard</CardTitle>
           </CardHeader>
 
           <CardContent>
             <div className="text-center mb-6">
-              <p className="text-base sm:text-lg font-medium">Welcome to your dashboard!</p>
+              <p className="text-lg sm:text-xl font-medium">Welcome to your dashboard!</p>
             </div>
 
-            <div className="mb-4">
+            <div className="mb-4 flex justify-center">
               <input
                 type="text"
-                className="input input-bordered w-full sm:w-80 mx-auto"
+                className="input input-bordered w-full sm:w-80"
                 placeholder="Search by name or role..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
             </div>
+
             <div className="overflow-x-auto">
-              <table className="table table-auto w-full">
+              <table className="table table-auto w-full text-left">
                 <thead>
                   <tr>
                     <th className="px-4 py-2">ID</th>

@@ -1,11 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { FaHome, FaTasks, FaUser, FaSignOutAlt } from "react-icons/fa";
+import { FaHome, FaTasks, FaUser, FaSignOutAlt, FaPlus } from "react-icons/fa";
 import { useState } from "react";
 
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [tasksOpen, setTasksOpen] = useState(false);
 
   return (
     <div className="flex">
@@ -24,7 +25,7 @@ const Sidebar = () => {
         } md:translate-x-0 md:w-64`}
       >
         <div className="p-4 font-bold text-center border-b border-gray-700">
-        YouData.AI
+          YouData.AI
         </div>
         <ul className="mt-8 space-y-6">
           <li>
@@ -37,13 +38,25 @@ const Sidebar = () => {
             </Link>
           </li>
           <li>
-            <Link
-              href="/tasks"
-              className="flex items-center space-x-3 p-4 hover:bg-gray-700 rounded-md transition"
+            <button
+              className="flex items-center space-x-3 p-4 w-full text-left hover:bg-gray-700 rounded-md transition"
+              onClick={() => setTasksOpen(!tasksOpen)}
             >
               <FaTasks />
               <span>Tasks</span>
-            </Link>
+            </button>
+            {tasksOpen && (
+              <ul className="space-y-2 ml-6 mt-2">
+                <li>
+                  <Link
+                    href="/tasks"
+                    className="flex items-center space-x-3 p-4 hover:bg-gray-700 rounded-md transition"
+                  >
+                    <span>List of Tasks</span>
+                  </Link>
+                </li>
+              </ul>
+            )}
           </li>
           <li>
             <Link

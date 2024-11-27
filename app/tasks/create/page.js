@@ -1,5 +1,7 @@
+'use client'; // Marks this file as a Client Component
+
 import TaskForm from "@/components/TaskForm";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 
 const CreateTaskPage = () => {
   const router = useRouter();

@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import Link from "next/link";
 
-
 const dummyTasks = [
   { id: 1, title: "Yearly Task 1", status: "Pending", date: "2024-01-15" },
   { id: 2, title: "Monthly Task 1", status: "Completed", date: "2024-11-10" },
@@ -14,42 +13,65 @@ const dummyTasks = [
 
 const TaskTable = () => {
   const [filter, setFilter] = useState("weekly");
+  const [statusFilter, setStatusFilter] = useState("all");
+
   const filteredTasks = dummyTasks.filter((task) => {
-    const taskDate = new Date(task.date); 
+    const taskDate = new Date(task.date);
     const now = new Date();
 
+    let matchesFilter = false;
     if (filter === "weekly") {
-      const weekStart = new Date(now.setDate(now.getDate() - now.getDay())); 
+      const weekStart = new Date(now.setDate(now.getDate() - now.getDay()));
       const weekEnd = new Date(weekStart);
-      weekEnd.setDate(weekStart.getDate() + 6); 
-      return taskDate >= weekStart && taskDate <= weekEnd;
+      weekEnd.setDate(weekStart.getDate() + 6);
+      matchesFilter = taskDate >= weekStart && taskDate <= weekEnd;
     } else if (filter === "monthly") {
-      return (
+      matchesFilter =
         taskDate.getMonth() === now.getMonth() &&
-        taskDate.getFullYear() === now.getFullYear()
-      );
+        taskDate.getFullYear() === now.getFullYear();
     } else if (filter === "yearly") {
-      return taskDate.getFullYear() === now.getFullYear();
+      matchesFilter = taskDate.getFullYear() === now.getFullYear();
+    } else {
+      matchesFilter = true;
     }
-    return true;
+
+    const matchesStatus =
+      statusFilter === "all" || task.status.toLowerCase() === statusFilter;
+
+    return matchesFilter && matchesStatus;
   });
 
   return (
     <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-      <div className="flex justify-center mb-4">
-        {["weekly", "monthly", "yearly"].map((view) => (
-          <button
-            key={view}
-            onClick={() => setFilter(view)}
-            className={`px-4 py-2 mx-1 text-sm font-medium rounded ${
-              filter === view
-                ? "bg-blue-500 text-white"
-                : "bg-gray-200 text-gray-700 hover:bg-blue-500 hover:text-white"
-            }`}
-          >
-            {view.charAt(0).toUpperCase() + view.slice(1)} Tasks
-          </button>
-        ))}
+      {/* Filter Buttons */}
+      <div className="flex justify-between mb-4">
+        <div className="flex">
+          {["weekly", "monthly", "yearly"].map((view) => (
+            <button
+              key={view}
+              onClick={() => setFilter(view)}
+              className={`px-4 py-2 mx-1 text-sm font-medium rounded ${
+                filter === view
+                  ? "bg-blue-500 text-white"
+                  : "bg-gray-200 text-gray-700 hover:bg-blue-500 hover:text-white"
+              }`}
+            >
+              {view.charAt(0).toUpperCase() + view.slice(1)} Tasks
+            </button>
+          ))}
+        </div>
+
+        {/* Status Filter */}
+        <select
+          value={statusFilter}
+          onChange={(e) => setStatusFilter(e.target.value.toLowerCase())}
+          className="px-4 py-2 text-sm font-medium bg-gray-200 text-gray-700 rounded hover:bg-blue-500 hover:text-white"
+        >
+          <option value="all">All Status</option>
+          <option value="pending">Pending</option>
+          <option value="in progress">In Progress</option>
+          <option value="completed">Completed</option>
+        </select>
       </div>
 
       {/* Task Table */}
@@ -92,7 +114,7 @@ const TaskTable = () => {
                 colSpan="5"
                 className="px-6 py-4 text-center text-gray-500"
               >
-                No tasks found for {filter} view.
+                No tasks found for the selected filter.
               </td>
             </tr>
           )}

@@ -1,4 +1,4 @@
-"use client";
+'use client';  
 
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
@@ -40,12 +40,9 @@ const Dashboard = () => {
       router.push("/auth");
     }
   }, [router, token]);
-
   if (!token) {
     return null;
   }
-
-  // Prepare chart data
   const chartData = {
     labels: filteredData.map((data) => data.name),
     datasets: [
@@ -61,7 +58,7 @@ const Dashboard = () => {
 
   const chartOptions = {
     responsive: true,
-    maintainAspectRatio: false, // Enable full responsiveness
+    maintainAspectRatio: false, 
     plugins: {
       legend: {
         position: "top",

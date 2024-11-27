@@ -9,11 +9,15 @@ const dummyTasks = [
   { id: 5, title: "Monthly Task 2", status: "Completed", date: "2024-11-05" },
   { id: 6, title: "Yearly Task 2", status: "Pending", date: "2024-12-20" },
   { id: 7, title: "Weekly Task 3", status: "In Progress", date: "2024-11-27" },
+  { id: 8, title: "Weekly Task 4", status: "Pending", date: "2024-11-28" },
+  { id: 9, title: "Monthly Task 3", status: "Completed", date: "2024-10-15" },
 ];
 
 const TaskTable = () => {
   const [filter, setFilter] = useState("weekly");
   const [statusFilter, setStatusFilter] = useState("all");
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
 
   const filteredTasks = dummyTasks.filter((task) => {
     const taskDate = new Date(task.date);
@@ -40,6 +44,17 @@ const TaskTable = () => {
 
     return matchesFilter && matchesStatus;
   });
+
+  const paginatedTasks = filteredTasks.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
+  const totalPages = Math.ceil(filteredTasks.length / itemsPerPage);
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
 
   return (
     <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
@@ -86,8 +101,8 @@ const TaskTable = () => {
           </tr>
         </thead>
         <tbody>
-          {filteredTasks.length > 0 ? (
-            filteredTasks.map((task) => (
+          {paginatedTasks.length > 0 ? (
+            paginatedTasks.map((task) => (
               <tr
                 key={task.id}
                 className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
@@ -120,6 +135,23 @@ const TaskTable = () => {
           )}
         </tbody>
       </table>
+
+      {/* Pagination */}
+      <div className="flex justify-center mt-4">
+        {Array.from({ length: totalPages }, (_, index) => (
+          <button
+            key={index}
+            onClick={() => handlePageChange(index + 1)}
+            className={`px-3 py-1 mx-1 text-sm font-medium rounded ${
+              currentPage === index + 1
+                ? "bg-blue-500 text-white"
+                : "bg-gray-200 text-gray-700 hover:bg-blue-500 hover:text-white"
+            }`}
+          >
+            {index + 1}
+          </button>
+        ))}
+      </div>
     </div>
   );
 };

@@ -5,6 +5,10 @@ import { useRouter } from "next/navigation";
 import Sidebar from "@/components/Sidebar";
 import { Card, CardHeader, CardContent, CardFooter, CardTitle } from "@/components/Card/card";
 import Cookies from "js-cookie";
+import { Bar } from "react-chartjs-2";
+import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from "chart.js";
+
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 const Dashboard = () => {
   const router = useRouter();
@@ -12,11 +16,11 @@ const Dashboard = () => {
 
   const [searchQuery, setSearchQuery] = useState("");
   const [tableData, setTableData] = useState([
-    { id: 1, name: "Mayank Dubey", role: "CEO/CTO" },
-    { id: 2, name: "Navneet Singh", role: "Front End Developer" },
-    { id: 3, name: "Harshil Rami", role: "Senior Data Scientist" },
-    { id: 4, name: "Sandeep Raghuvanshi", role: "DevOps" },
-    { id: 5, name: "Saurav Yadav", role: "Data Team" },
+    { id: 1, name: "Mayank Dubey", role: "CEO/CTO", progress: 100 },
+    { id: 2, name: "Navneet Singh", role: "Front End Developer", progress: 65 },
+    { id: 3, name: "Harshil Rami", role: "Senior Data Scientist", progress: 90 },
+    { id: 4, name: "Sandeep Raghuvanshi", role: "DevOps", progress: 85 },
+    { id: 5, name: "Saurav Yadav", role: "Data Team", progress: 70 },
   ]);
 
   const filteredData = tableData.filter((row) =>
@@ -33,6 +37,40 @@ const Dashboard = () => {
   if (!token) {
     return null;
   }
+
+  // Prepare chart data
+  const chartData = {
+    labels: filteredData.map((data) => data.name),
+    datasets: [
+      {
+        label: "Employee Progress (%)",
+        data: filteredData.map((data) => data.progress),
+        backgroundColor: "rgba(54, 162, 235, 0.6)",
+        borderColor: "rgba(54, 162, 235, 1)",
+        borderWidth: 1,
+      },
+    ],
+  };
+
+  const chartOptions = {
+    responsive: true,
+    maintainAspectRatio: false, // Enable full responsiveness
+    plugins: {
+      legend: {
+        position: "top",
+      },
+      title: {
+        display: true,
+        text: "Employee Progress Chart",
+      },
+    },
+    scales: {
+      y: {
+        beginAtZero: true,
+        max: 100,
+      },
+    },
+  };
 
   return (
     <div className="flex flex-col lg:flex-row min-h-screen">
@@ -59,7 +97,7 @@ const Dashboard = () => {
               />
             </div>
 
-            <div className="overflow-x-auto">
+            <div className="overflow-x-auto mb-8">
               <table className="table table-auto w-full text-left">
                 <thead>
                   <tr>
@@ -86,6 +124,11 @@ const Dashboard = () => {
                   )}
                 </tbody>
               </table>
+            </div>
+
+            {/* Progress Bar Chart */}
+            <div className="relative w-full h-96"> {/* Responsive container */}
+              <Bar data={chartData} options={chartOptions} />
             </div>
           </CardContent>
         </Card>

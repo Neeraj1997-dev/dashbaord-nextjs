@@ -23,6 +23,13 @@ const Dashboard = () => {
     { id: 5, name: "Saurav Yadav", role: "Data Team", progress: 70 },
   ]);
 
+  const [projectList, setProjectList] = useState([
+    { id: 1, name: "Tender Tiger", status: "In Progress", progress: 70 },
+    { id: 2, name: "Enterprise-Dashboard", status: "In Progress", progress: 60 },
+    { id: 3, name: "Eagle Tender", status: "In Progress", progress: 90 },
+    { id: 4, name: "YouData", status: "Completed", progress: 100 },
+  ]);
+
   const filteredData = tableData.filter((row) =>
     row.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
     row.role.toLowerCase().includes(searchQuery.toLowerCase())
@@ -129,6 +136,39 @@ const Dashboard = () => {
             {/* Progress Bar Chart */}
             <div className="relative w-full h-96"> {/* Responsive container */}
               <Bar data={chartData} options={chartOptions} />
+            </div>
+
+            {/* Project List */}
+            <div className="mt-8">
+              <h2 className="text-xl font-semibold mb-4">Project List</h2>
+              <table className="table table-auto w-full text-left">
+                <thead>
+                  <tr>
+                    <th className="px-4 py-2">ID</th>
+                    <th className="px-4 py-2">Project Name</th>
+                    <th className="px-4 py-2">Status</th>
+                    <th className="px-4 py-2">Progress</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {projectList.length > 0 ? (
+                    projectList.map((project) => (
+                      <tr key={project.id}>
+                        <td className="border px-4 py-2">{project.id}</td>
+                        <td className="border px-4 py-2">{project.name}</td>
+                        <td className="border px-4 py-2">{project.status}</td>
+                        <td className="border px-4 py-2">{project.progress}%</td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr>
+                      <td colSpan="4" className="text-center border px-4 py-2">
+                        No projects found
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
             </div>
           </CardContent>
         </Card>

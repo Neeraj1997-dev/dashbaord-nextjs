@@ -1,4 +1,4 @@
-'use client';  
+'use client';
 
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
@@ -30,6 +30,8 @@ const Dashboard = () => {
     { id: 4, name: "YouData", status: "Completed", progress: 100 },
   ]);
 
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
   const filteredData = tableData.filter((row) =>
     row.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
     row.role.toLowerCase().includes(searchQuery.toLowerCase())
@@ -43,6 +45,7 @@ const Dashboard = () => {
   if (!token) {
     return null;
   }
+
   const chartData = {
     labels: filteredData.map((data) => data.name),
     datasets: [
@@ -58,7 +61,7 @@ const Dashboard = () => {
 
   const chartOptions = {
     responsive: true,
-    maintainAspectRatio: false, 
+    maintainAspectRatio: false,
     plugins: {
       legend: {
         position: "top",
@@ -78,19 +81,34 @@ const Dashboard = () => {
 
   return (
     <div className="flex flex-col lg:flex-row min-h-screen">
-      <Sidebar className="lg:block hidden" />
+      {/* Sidebar */}
+      <div className={`lg:block ${sidebarOpen ? "block" : "hidden"} fixed inset-0 z-50 bg-white lg:static`}>
+        <Sidebar />
+      </div>
 
+      <div className="lg:hidden bg-gray-100 p-4 flex justify-between items-center">
+        <button
+          className="btn btn-primary"
+          onClick={() => setSidebarOpen(!sidebarOpen)}
+        >
+          {sidebarOpen ? "Close" : "Menu"}
+        </button>
+      </div>
+
+      {/* Main Content */}
       <div className="flex-1 flex flex-col px-4 sm:px-6 lg:px-8">
-        <Card className="flex-1 w-full mt-8 p-6 bg-white shadow-lg rounded-lg">
+        <Card className="flex-1 w-full mt-4 sm:mt-8 p-6 bg-white shadow-lg rounded-lg">
           <CardHeader>
-            <CardTitle className="text-2xl sm:text-3xl font-bold text-center">YouData.AI</CardTitle>
+            <CardTitle className="text-xl sm:text-2xl lg:text-3xl font-bold text-center">YouData.AI</CardTitle>
           </CardHeader>
 
           <CardContent>
+            {/* Welcome Section */}
             <div className="text-center mb-6">
-              <p className="text-lg sm:text-xl font-medium">Welcome to your YouData.AI!</p>
+              <p className="text-lg sm:text-xl font-medium">Welcome to YouData.AI!</p>
             </div>
 
+            {/* Search Input */}
             <div className="mb-4 flex justify-center">
               <input
                 type="text"
@@ -101,10 +119,11 @@ const Dashboard = () => {
               />
             </div>
 
+            {/* Responsive Table */}
             <div className="overflow-x-auto mb-8">
-              <table className="table table-auto w-full text-left">
+              <table className="table-auto w-full text-left border-collapse border border-gray-200">
                 <thead>
-                  <tr>
+                  <tr className="bg-gray-100">
                     <th className="px-4 py-2">ID</th>
                     <th className="px-4 py-2">Name</th>
                     <th className="px-4 py-2">Role</th>
@@ -130,17 +149,17 @@ const Dashboard = () => {
               </table>
             </div>
 
-            {/* Progress Bar Chart */}
-            <div className="relative w-full h-96"> {/* Responsive container */}
+            {/* Bar Chart */}
+            <div className="relative w-full h-64 sm:h-96">
               <Bar data={chartData} options={chartOptions} />
             </div>
 
             {/* Project List */}
             <div className="mt-8">
-              <h2 className="text-xl font-semibold mb-4">Project List</h2>
-              <table className="table table-auto w-full text-left">
+              <h2 className="text-lg sm:text-xl font-semibold mb-4">Project List</h2>
+              <table className="table-auto w-full text-left border-collapse border border-gray-200">
                 <thead>
-                  <tr>
+                  <tr className="bg-gray-100">
                     <th className="px-4 py-2">ID</th>
                     <th className="px-4 py-2">Project Name</th>
                     <th className="px-4 py-2">Status</th>

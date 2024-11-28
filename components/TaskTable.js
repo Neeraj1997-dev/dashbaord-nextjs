@@ -4,21 +4,122 @@ import jsPDF from "jspdf";
 import "jspdf-autotable";
 
 const dummyTasks = [
-  { id: 1, title: "Yearly Task 1", status: "Pending", date: "2024-01-15" },
-  { id: 2, title: "Monthly Task 1", status: "Completed", date: "2024-11-10" },
-  { id: 3, title: "Weekly Task 1", status: "In Progress", date: "2024-11-25" },
-  { id: 4, title: "Weekly Task 2", status: "Pending", date: "2024-11-26" },
-  { id: 5, title: "Monthly Task 2", status: "Completed", date: "2024-11-05" },
-  { id: 6, title: "Yearly Task 2", status: "Pending", date: "2024-12-20" },
-  { id: 7, title: "Weekly Task 3", status: "In Progress", date: "2024-11-27" },
-  { id: 8, title: "Weekly Task 4", status: "Pending", date: "2024-11-28" },
-  { id: 9, title: "Monthly Task 3", status: "Completed", date: "2024-10-15" },
+  {
+    id: 1,
+    title: "Yearly Report Review",
+    status: "Pending",
+    date: "2024-01-15",
+    assignees: ["Navneet", "Harshil"],
+  },
+  {
+    id: 2,
+    title: "Monthly Financial Update",
+    status: "Completed",
+    date: "2024-11-10",
+    assignees: ["Sandeep"],
+  },
+  {
+    id: 3,
+    title: "Weekly Client Follow-Up",
+    status: "In Progress",
+    date: "2024-11-25",
+    assignees: ["Saurav", "Neeraj"],
+  },
+  {
+    id: 4,
+    title: "Weekly Team Meeting",
+    status: "Pending",
+    date: "2024-11-26",
+    assignees: ["Navneet", "Saurav"],
+  },
+  {
+    id: 5,
+    title: "Monthly Performance Review",
+    status: "Completed",
+    date: "2024-11-05",
+    assignees: ["Harshil", "Neeraj"],
+  },
+  {
+    id: 6,
+    title: "Yearly Strategy Planning",
+    status: "Pending",
+    date: "2024-12-20",
+    assignees: ["Sandeep", "Saurav"],
+  },
+  {
+    id: 7,
+    title: "Weekly Sales Analysis",
+    status: "In Progress",
+    date: "2024-11-27",
+    assignees: ["Neeraj"],
+  },
+  {
+    id: 8,
+    title: "Weekly Task Delegation",
+    status: "Pending",
+    date: "2024-11-28",
+    assignees: ["Navneet", "Harshil"],
+  },
+  {
+    id: 9,
+    title: "Monthly Project Update",
+    status: "Completed",
+    date: "2024-10-15",
+    assignees: ["Sandeep"],
+  },
+  {
+    id: 10,
+    title: "Yearly System Audit",
+    status: "Pending",
+    date: "2024-12-15",
+    assignees: ["Saurav", "Neeraj"],
+  },
+  {
+    id: 11,
+    title: "Monthly Newsletter Creation",
+    status: "In Progress",
+    date: "2024-11-20",
+    assignees: ["Navneet", "Sandeep"],
+  },
+  {
+    id: 12,
+    title: "Weekly Social Media Review",
+    status: "Pending",
+    date: "2024-11-29",
+    assignees: ["Harshil"],
+  },
+  {
+    id: 13,
+    title: "Yearly Budget Finalization",
+    status: "Completed",
+    date: "2024-01-10",
+    assignees: ["Saurav", "Neeraj"],
+  },
+  {
+    id: 14,
+    title: "Monthly IT Infrastructure Check",
+    status: "Pending",
+    date: "2024-11-15",
+    assignees: ["Harshil", "Sandeep"],
+  },
+  {
+    id: 15,
+    title: "Weekly Customer Support Training",
+    status: "In Progress",
+    date: "2024-11-30",
+    assignees: ["Navneet", "Saurav"],
+  },
 ];
+
+
 
 const TaskTable = () => {
   const [filter, setFilter] = useState("weekly");
   const [statusFilter, setStatusFilter] = useState("all");
   const [currentPage, setCurrentPage] = useState(1);
+  const [currentTask, setCurrentTask] = useState(null); // For editing assignees
+  const [newAssignee, setNewAssignee] = useState("");
+
   const itemsPerPage = 5;
 
   const filteredTasks = dummyTasks.filter((task) => {
@@ -58,29 +159,29 @@ const TaskTable = () => {
     setCurrentPage(page);
   };
 
-  const downloadPDF = () => {
-    const doc = new jsPDF();
-    const tableColumn = ["ID", "Title", "Status", "Date"];
-    const tableRows = filteredTasks.map((task) => [
-      task.id,
-      task.title,
-      task.status,
-      task.date,
-    ]);
+  const handleAssigneeUpdate = (task) => {
+    setCurrentTask(task);
+    setNewAssignee("");
+  };
 
-    doc.text("Task List", 14, 10);
-    doc.autoTable({
-      startY: 20,
-      head: [tableColumn],
-      body: tableRows,
-    });
-    doc.save("tasks.pdf");
+  const addAssignee = () => {
+    if (newAssignee.trim()) {
+      currentTask.assignees.push(newAssignee.trim());
+      setCurrentTask(null);
+    }
+  };
+
+  const removeAssignee = (name) => {
+    currentTask.assignees = currentTask.assignees.filter(
+      (assignee) => assignee !== name
+    );
+    setCurrentTask(null);
   };
 
   return (
     <div className="p-4 sm:p-6 lg:p-8 bg-white rounded-lg shadow-md">
-      {/* Filter Buttons */}
       <div className="mb-4">
+        {/* Filter Buttons */}
         <div className="flex flex-wrap justify-between gap-4">
           {["weekly", "monthly", "yearly"].map((view) => (
             <button
@@ -105,16 +206,9 @@ const TaskTable = () => {
             <option value="in progress">In Progress</option>
             <option value="completed">Completed</option>
           </select>
-          <button
-            onClick={downloadPDF}
-            className="w-full sm:w-auto px-4 py-2 text-sm font-medium bg-green-500 text-white rounded hover:bg-green-600"
-          >
-            Download PDF
-          </button>
         </div>
       </div>
 
-      {/* Task Table */}
       <div className="overflow-x-auto">
         <table className="min-w-full text-sm text-left text-gray-500">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50">
@@ -123,6 +217,7 @@ const TaskTable = () => {
               <th scope="col" className="px-6 py-3">Title</th>
               <th scope="col" className="px-6 py-3">Status</th>
               <th scope="col" className="px-6 py-3">Date</th>
+              <th scope="col" className="px-6 py-3">Assignees</th>
               <th scope="col" className="px-6 py-3">Actions</th>
             </tr>
           </thead>
@@ -138,19 +233,22 @@ const TaskTable = () => {
                   <td className="px-6 py-4">{task.status}</td>
                   <td className="px-6 py-4">{task.date}</td>
                   <td className="px-6 py-4">
-                    <Link
-                      href={`/tasks/${task.id}`}
+                    {task.assignees.join(", ") || "None"}
+                  </td>
+                  <td className="px-6 py-4">
+                    <button
+                      onClick={() => handleAssigneeUpdate(task)}
                       className="text-blue-600 hover:underline"
                     >
-                      Edit
-                    </Link>
+                      Update Assignees
+                    </button>
                   </td>
                 </tr>
               ))
             ) : (
               <tr>
                 <td
-                  colSpan="5"
+                  colSpan="6"
                   className="px-6 py-4 text-center text-gray-500"
                 >
                   No tasks found for the selected filter.
@@ -162,7 +260,7 @@ const TaskTable = () => {
       </div>
 
       {/* Pagination */}
-      <div className="flex flex-wrap justify-center mt-4 gap-2">
+      <div className="flex justify-center mt-4 gap-2">
         {Array.from({ length: totalPages }, (_, index) => (
           <button
             key={index}
@@ -177,6 +275,52 @@ const TaskTable = () => {
           </button>
         ))}
       </div>
+
+      {/* Assignee Modal */}
+      {currentTask && (
+        <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center">
+          <div className="bg-white p-6 rounded-lg shadow-lg">
+            <h3 className="text-lg font-bold mb-4">
+              Update Assignees for "{currentTask.title}"
+            </h3>
+            <ul className="mb-4">
+              {currentTask.assignees.map((name, index) => (
+                <li
+                  key={index}
+                  className="flex justify-between items-center mb-2"
+                >
+                  {name}
+                  <button
+                    onClick={() => removeAssignee(name)}
+                    className="text-red-500 text-sm"
+                  >
+                    Remove
+                  </button>
+                </li>
+              ))}
+            </ul>
+            <input
+              type="text"
+              placeholder="Add new assignee"
+              value={newAssignee}
+              onChange={(e) => setNewAssignee(e.target.value)}
+              className="border px-3 py-2 mb-4 w-full"
+            />
+            <button
+              onClick={addAssignee}
+              className="bg-blue-500 text-white px-4 py-2 rounded mr-2"
+            >
+              Add
+            </button>
+            <button
+              onClick={() => setCurrentTask(null)}
+              className="bg-gray-500 text-white px-4 py-2 rounded"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

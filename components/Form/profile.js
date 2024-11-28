@@ -57,9 +57,9 @@ const Profile = () => {
           email: data.user.email || "neeraj@aisv.in",
           phone: data.user.phone || "7056330417",
           address: data.user.address || "Unknown Address",
-          dob: data.user.dob || "2000-01-01",
+          dob: data.user.dob || "1997-07-13",
         });
-        setProfileImage(data.user.profileImage || "/dummy-profile.png");
+        setProfileImage(data.user.profileImage || require("./dummy-profile.png"));
       } catch (err) {
         setError(err.message || "An error occurred.");
       } finally {

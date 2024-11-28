@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
+import jsPDF from "jspdf";
+import "jspdf-autotable";
 
 const dummyTasks = [
   { id: 1, title: "Yearly Task 1", status: "Pending", date: "2024-01-15" },
@@ -56,6 +58,25 @@ const TaskTable = () => {
     setCurrentPage(page);
   };
 
+  const downloadPDF = () => {
+    const doc = new jsPDF();
+    const tableColumn = ["ID", "Title", "Status", "Date"];
+    const tableRows = filteredTasks.map((task) => [
+      task.id,
+      task.title,
+      task.status,
+      task.date,
+    ]);
+
+    doc.text("Task List", 14, 10);
+    doc.autoTable({
+      startY: 20,
+      head: [tableColumn],
+      body: tableRows,
+    });
+    doc.save("tasks.pdf");
+  };
+
   return (
     <div className="p-4 sm:p-6 lg:p-8 bg-white rounded-lg shadow-md">
       {/* Filter Buttons */}
@@ -84,6 +105,12 @@ const TaskTable = () => {
             <option value="in progress">In Progress</option>
             <option value="completed">Completed</option>
           </select>
+          <button
+            onClick={downloadPDF}
+            className="w-full sm:w-auto px-4 py-2 text-sm font-medium bg-green-500 text-white rounded hover:bg-green-600"
+          >
+            Download PDF
+          </button>
         </div>
       </div>
 

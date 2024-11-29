@@ -71,8 +71,8 @@ const LoginForm = () => {
 
   return (
     <div className="flex items-center justify-center min-h-screen px-4 sm:px-6 lg:px-8 bg-gray-50">
-      <Card className="w-full max-w-md sm:max-w-lg mx-auto p-4 sm:p-6 lg:p-8 shadow-lg">
-        <CardHeader className="text-center">
+      <Card className="w-full max-w-md sm:max-w-lg mx-auto p-4 sm:p-6 lg:p-8 shadow-lg transition-all duration-500 ease-in-out transform hover:scale-105">
+        <CardHeader className="text-center animate__animated animate__fadeIn">
           <CardTitle className="text-xl sm:text-2xl font-bold text-center">
             Welcome to YouData Team
           </CardTitle>
@@ -80,7 +80,10 @@ const LoginForm = () => {
         </CardHeader>
         <CardContent>
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            <form
+              onSubmit={form.handleSubmit(onSubmit)}
+              className="space-y-6 animate__animated animate__fadeIn animate__delay-1s"
+            >
               <FormField
                 control={form.control}
                 name="email"
@@ -92,6 +95,7 @@ const LoginForm = () => {
                         placeholder="Enter your email"
                         {...field}
                         value={field.value || ""} // Ensure it's always controlled
+                        className="transition duration-300 ease-in-out transform focus:ring-2 focus:ring-blue-500"
                       />
                     </FormControl>
                     <FormMessage>
@@ -112,6 +116,7 @@ const LoginForm = () => {
                         placeholder="Enter your password"
                         {...field}
                         value={field.value || ""} // Ensure it's always controlled
+                        className="transition duration-300 ease-in-out transform focus:ring-2 focus:ring-blue-500"
                       />
                     </FormControl>
                     <FormMessage>

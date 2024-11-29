@@ -42,6 +42,7 @@ const Dashboard = () => {
       router.push("/auth");
     }
   }, [router, token]);
+
   if (!token) {
     return null;
   }

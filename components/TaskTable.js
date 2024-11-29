@@ -111,8 +111,6 @@ const dummyTasks = [
   },
 ];
 
-
-
 const TaskTable = () => {
   const [filter, setFilter] = useState("weekly");
   const [statusFilter, setStatusFilter] = useState("all");
@@ -251,7 +249,7 @@ const TaskTable = () => {
                   colSpan="6"
                   className="px-6 py-4 text-center text-gray-500"
                 >
-                  No tasks found for the selected filter.
+                  No tasks available
                 </td>
               </tr>
             )}
@@ -259,68 +257,73 @@ const TaskTable = () => {
         </table>
       </div>
 
-      {/* Pagination */}
-      <div className="flex justify-center mt-4 gap-2">
-        {Array.from({ length: totalPages }, (_, index) => (
-          <button
-            key={index}
-            onClick={() => handlePageChange(index + 1)}
-            className={`px-3 py-1 text-sm font-medium rounded ${
-              currentPage === index + 1
-                ? "bg-blue-500 text-white"
-                : "bg-gray-200 text-gray-700 hover:bg-blue-500 hover:text-white"
-            }`}
-          >
-            {index + 1}
-          </button>
-        ))}
-      </div>
-
-      {/* Assignee Modal */}
       {currentTask && (
-        <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center">
-          <div className="bg-white p-6 rounded-lg shadow-lg">
-            <h3 className="text-lg font-bold mb-4">
-              Update Assignees for "{currentTask.title}"
-            </h3>
-            <ul className="mb-4">
-              {currentTask.assignees.map((name, index) => (
-                <li
-                  key={index}
+        <div className="mt-4 p-4 bg-gray-50 rounded-lg shadow-md">
+          <h3 className="text-lg font-bold mb-4">
+            Update Assignees for &quot;{currentTask.title}&quot;
+          </h3>
+          <div>
+            <input
+              type="text"
+              value={newAssignee}
+              onChange={(e) => setNewAssignee(e.target.value)}
+              className="w-full px-4 py-2 mb-4 border border-gray-300 rounded"
+              placeholder="Add new assignee"
+            />
+            <div className="flex justify-between gap-4">
+              <button
+                onClick={addAssignee}
+                className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+              >
+                Add Assignee
+              </button>
+              <button
+                onClick={() => setCurrentTask(null)}
+                className="px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400"
+              >
+                Cancel
+              </button>
+            </div>
+            <div className="mt-4">
+              {currentTask.assignees.map((assignee) => (
+                <div
+                  key={assignee}
                   className="flex justify-between items-center mb-2"
                 >
-                  {name}
+                  <span>{assignee}</span>
                   <button
-                    onClick={() => removeAssignee(name)}
-                    className="text-red-500 text-sm"
+                    onClick={() => removeAssignee(assignee)}
+                    className="text-red-600 hover:underline"
                   >
                     Remove
                   </button>
-                </li>
+                </div>
               ))}
-            </ul>
-            <input
-              type="text"
-              placeholder="Add new assignee"
-              value={newAssignee}
-              onChange={(e) => setNewAssignee(e.target.value)}
-              className="border px-3 py-2 mb-4 w-full"
-            />
-            <button
-              onClick={addAssignee}
-              className="bg-blue-500 text-white px-4 py-2 rounded mr-2"
-            >
-              Add
-            </button>
-            <button
-              onClick={() => setCurrentTask(null)}
-              className="bg-gray-500 text-white px-4 py-2 rounded"
-            >
-              Close
-            </button>
+            </div>
           </div>
         </div>
       )}
+
+      {/* Pagination */}
+      <div className="mt-6 flex justify-between items-center">
+        <button
+          onClick={() => handlePageChange(currentPage - 1)}
+          disabled={currentPage === 1}
+          className="px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400"
+        >
+          Previous
+        </button>
+        <span>
+          Page {currentPage} of {totalPages}
+        </span>
+        <button
+          onClick={() => handlePageChange(currentPage + 1)}
+          disabled={currentPage === totalPages}
+          className="px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400"
+        >
+          Next
+        </button>
+      </div>
     </div>
   );
 };
